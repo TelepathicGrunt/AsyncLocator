@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,12 +21,8 @@ public class ExplorationMapFunctionLogic {
 
 	public static void invalidateMap(ItemStack mapStack, ServerLevel level, BlockPos pos) {
 		handleUpdateMapInChest(mapStack, level, pos, (handler, slot) -> {
-			if (handler instanceof IItemHandlerModifiable modifiableHandler) {
-				modifiableHandler.setStackInSlot(slot, new ItemStack(Items.MAP));
-			} else {
-				handler.extractItem(slot, Item.MAX_STACK_SIZE, false);
-				handler.insertItem(slot, new ItemStack(Items.MAP), false);
-			}
+			handler.removeItem(slot, Item.MAX_STACK_SIZE);
+			handler.setItem(slot, new ItemStack(Items.MAP));
 		});
 	}
 
